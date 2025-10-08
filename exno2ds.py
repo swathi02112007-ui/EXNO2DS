@@ -4,10 +4,10 @@ Converted from Google Colab to VS Code Compatible Script
 """
 
 # %%
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd # pyright: ignore[reportMissingModuleSource]
+import numpy as np # pyright: ignore[reportMissingImports]
+import matplotlib.pyplot as plt # pyright: ignore[reportMissingModuleSource]
+import seaborn as sns # pyright: ignore[reportMissingModuleSource]
 
 # %%
 # READ CSV FILE

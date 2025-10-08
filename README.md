@@ -244,4 +244,10 @@ PassengerId                 ...
 4                 1       1  ...  C123        S
 5                 0       3  ...   NaN        S
 
-        
+![alt text](bivariate_countplot_annotations.png)  
+![alt text](bivariate_pclass_survived.png)
+![alt text](boxplot_age_survived.png)
+![alt text](correlation_heatmap.png)
+![alt text](multivariate_age_pclass_gender.png)
+![alt text](multivariate_pclass_survived_gender.png)
+![alt text](univariate_survived.png)
