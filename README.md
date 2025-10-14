@@ -23,231 +23,110 @@ STEP 7: Use cross tabulation method to quantitatively analyze the relationship b
 STEP 8: Use heatmap method of representation to show relationships between two variables, one plotted on each axis.
 
 ## CODING AND OUTPUT
-~~~
-# -*- coding: utf-8 -*-
-"""EXNO2DS.py
-Converted from Google Colab to VS Code Compatible Script
-"""
 
-# %%
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sns  
+df=pd.read_csv("titanic_dataset.csv")
+df
 
-# %%
-# READ CSV FILE
-# Replace with your CSV file path
-dt = pd.read_csv("C:/path/to/your/titanic.csv")  # 👈 Change this path
-print("DATA PREVIEW:")
-print(dt.head())
+![alt text](b1.png)
 
-# %%
-# DISPLAY INFORMATION ABOUT DATASET
-print("\nDATASET INFO:")
-print(dt.info())
+df.info()
 
-# %%
-# DISPLAY NO. OF ROWS AND COLUMNS
-print("\nNumber of Rows and Columns:")
-print(dt.shape)
+![alt text](b2.png)
 
-# %%
-# SET PASSENGER ID AS INDEX COLUMN
-if 'PassengerId' in dt.columns:
-    dt.set_index('PassengerId', inplace=True)
-print("\nDataset after setting PassengerId as index:")
-print(dt.head())
+df.shape
 
-# %%
-# DESCRIPTIVE STATISTICS
-print("\nDESCRIPTIVE STATISTICS:")
-print(dt.describe())
+![alt text](b3.png)
 
-# =======================================================
-# **CATEGORICAL DATA ANALYSIS**
-# =======================================================
+df.set_index("PassengerId",inplace=True)
+df.describe()
 
-# %%
-# USE VALUE_COUNTS FUNCTION AND PERFORM CATEGORICAL ANALYSIS
-print("\nValue Counts for 'Sex' column:")
-if 'Sex' in dt.columns:
-    print(dt['Sex'].value_counts())
+![alt text](b4.png)
 
-print("\nValue Counts for 'Embarked' column (if available):")
-if 'Embarked' in dt.columns:
-    print(dt['Embarked'].value_counts())
+df.shape
 
-# =======================================================
-# **UNIVARIATE ANALYSIS**
-# =======================================================
+![alt text](b5.png)
 
-# %%
-# USE COUNTPLOT AND PERFORM UNIVARIATE ANALYSIS FOR "SURVIVED" COLUMN
-if 'Survived' in dt.columns:
-    plt.figure(figsize=(6,4))
-    sns.countplot(x='Survived', data=dt)
-    plt.title("Univariate Analysis - Survived Count")
-    plt.show()
+Categorical data analysis
 
-# %%
-# IDENTIFY UNIQUE VALUES IN "PASSENGER CLASS" COLUMN
-if 'Pclass' in dt.columns:
-    print("\nUnique values in Pclass column:")
-    print(dt['Pclass'].unique())
+df.nunique()
 
-# %%
-# RENAMING COLUMN
-if 'Sex' in dt.columns:
-    dt.rename(columns={'Sex': 'Gender'}, inplace=True)
-print("\nDataset after renaming 'Sex' to 'Gender':")
-print(dt.head())
+![alt text](b6.png)
 
-# =======================================================
-# **BIVARIATE ANALYSIS**
-# =======================================================
+df["Survived"].value_counts()
 
-# %%
-# USE CATPLOT METHOD FOR BIVARIATE ANALYSIS
-if {'Pclass', 'Survived'} <= set(dt.columns):
-    sns.catplot(x='Pclass', hue='Survived', kind='count', data=dt, height=5, aspect=1.2)
-    plt.title("Bivariate Analysis - Survival by Passenger Class")
-    plt.show()
+![alt text](b7.png)
 
-# %%
-# USE COUNTPLOT WITH ANNOTATIONS
-if {'Pclass', 'Survived'} <= set(dt.columns):
-    fig, ax1 = plt.subplots(figsize=(8,5))
-    graph = sns.countplot(x='Pclass', hue='Survived', data=dt)
-    plt.title("Bivariate CountPlot - Survival vs Pclass")
-    graph.set_xticklabels(graph.get_xticklabels())
-    for p in graph.patches:
-        height = p.get_height()
-        graph.text(p.get_x()+p.get_width()/2, height + 1, height, ha="center")
-    plt.show()
+per=(df["Survived"].value_counts()/df.shape[0]*100).round(2)
+per
 
-# %%
-# USE BOXPLOT METHOD TO ANALYZE AGE AND SURVIVED COLUMN
-if {'Age', 'Survived'} <= set(dt.columns):
-    plt.figure(figsize=(8,5))
-    sns.boxplot(x='Survived', y='Age', data=dt)
-    plt.title("Bivariate Analysis - Age vs Survived")
-    plt.show()
+![alt text](b8.png)
 
-# =======================================================
-# **MULTIVARIATE ANALYSIS**
-# =======================================================
+sns.countplot(data=df,x="Survived")
 
-# %%
-# USE BOXPLOT METHOD AND ANALYZE THREE COLUMNS (PCLASS, AGE, GENDER)
-if {'Pclass', 'Age', 'Gender'} <= set(dt.columns):
-    plt.figure(figsize=(8,5))
-    sns.boxplot(x='Pclass', y='Age', hue='Gender', data=dt)
-    plt.title("Multivariate Analysis - Age vs Pclass and Gender")
-    plt.show()
+![alt text](b9.png)
 
-# %%
-# USE CATPLOT METHOD AND ANALYZE THREE COLUMNS (PCLASS, SURVIVED, GENDER)
-if {'Pclass', 'Survived', 'Gender'} <= set(dt.columns):
-    sns.catplot(x='Pclass', hue='Gender', col='Survived', kind='count', data=dt, height=5, aspect=1)
-    plt.subplots_adjust(top=0.85)
-    plt.suptitle("Multivariate Analysis - Pclass, Survived, Gender")
-    plt.show()
+df
 
-# %%
-# IMPLEMENT HEATMAP AND PAIRPLOT FOR THE DATASET
-plt.figure(figsize=(10,6))
-sns.heatmap(dt.corr(numeric_only=True), annot=True, cmap='coolwarm')
-plt.title("Correlation Heatmap")
-plt.show()
+![alt text](b10.png)
 
-sns.pairplot(dt, hue='Survived', diag_kind='kde')
-plt.show()
+df.Pclass.unique()
 
-~~~
-        
+![alt text](b11.png)
+
+df.rename(columns={'Sex':'Gender'},inplace=True)
+df
+
+![alt text](b12.png)
+
+Bivariate Analysis
+
+sns.catplot(x="Gender",col="Survived",kind="count",data=df,height=5,aspect=.7)
+
+![alt text](b13.png)
+
+sns.catplot(x="Survived",hue="Gender",data=df,kind="count")
+
+![alt text](b14.png)
+
+df.boxplot(column="Age",by="Survived")
+
+![alt text](b15.png)
+
+sns.scatterplot(x=df["Age"],y=df["Fare"])
+
+![alt text](b16.png)
+
+sns.jointplot(x="Age",y="Fare",data=df)
+
+![alt text](b17.png)
+
+Multivariate Analysis
+
+fig, ax1 = plt.subplots(figsize=(8,5))
+plt = sns.boxplot(ax=ax1,x='Pclass',y='Age',hue='Gender',data=df)
+
+![alt text](b18.png)
+
+sns.catplot(data=df,col="Survived",x="Gender",hue="Pclass",kind="count")
+
+![alt text](b19.png)
+
+Co-relation
+
+corr=df.corr()
+sns.heatmap(corr,annot=True)
+
+![alt text](b20.png)
+
+sns.pairplot(df)
+
+![alt text](b21.png)
 
 # RESULT
-DATA PREVIEW:
-   PassengerId  Survived  Pclass  ...     Fare Cabin  Embarked
-0            1         0       3  ...   7.2500   NaN         S
-1            2         1       1  ...  71.2833   C85         C
-2            3         1       3  ...   7.9250   NaN         S
-3            4         1       1  ...  53.1000  C123         S
-4            5         0       3  ...   8.0500   NaN         S
 
-DATASET INFO:
-<class 'pandas.core.frame.DataFrame'>
-RangeIndex: 891 entries, 0 to 890
-Data columns (total 12 columns):
- #   Column       Non-Null Count  Dtype  
----  ------       --------------  -----  
- 0   PassengerId  891 non-null    int64  
- 1   Survived     891 non-null    int64  
- 2   Pclass       891 non-null    int64  
- 3   Name         891 non-null    object 
- 4   Gender       891 non-null    object 
- 5   Age          714 non-null    float64
- 6   SibSp        891 non-null    int64  
- 7   Parch        891 non-null    int64  
- 8   Ticket       891 non-null    object 
- 9   Fare         891 non-null    float64
- 10  Cabin        204 non-null    object 
- 11  Embarked     889 non-null    object 
-dtypes: float64(2), int64(5), object(5)
-memory usage: 83.7+ KB
-None
-
-Number of Rows and Columns:
-(891, 12)
-
-Dataset after setting PassengerId as index:
-            Survived  Pclass  ... Cabin Embarked
-PassengerId                 ...                
-1                 0       3  ...   NaN        S
-2                 1       1  ...   C85        C
-3                 1       3  ...   NaN        S
-4                 1       1  ...  C123        S
-5                 0       3  ...   NaN        S
-
-DESCRIPTIVE STATISTICS:
-          Survived     Pclass         Age       SibSp       Parch        Fare
-count  891.000000  891.000000  714.000000  891.000000  891.000000  891.000000
-mean     0.383838    2.308642   29.699118    0.523008    0.381594   32.204208
-std      0.486592    0.836071   14.526497    1.102743    0.806057   49.693429
-min      0.000000    1.000000    0.420000    0.000000    0.000000    0.000000
-25%      0.000000    2.000000   20.125000    0.000000    0.000000    7.910400
-50%      0.000000    3.000000   28.000000    0.000000    0.000000   14.454200
-75%      1.000000    3.000000   38.000000    1.000000    0.000000   31.000000
-max      1.000000    3.000000   80.000000    8.000000    6.000000  512.329200
-
-Value Counts for 'Sex' column:
-male      577
-female    314
-Name: Sex, dtype: int64
-
-Value Counts for 'Embarked' column (if available):
-S    644
-C    168
-Q     77
-Name: Embarked, dtype: int64
-
-Unique values in Pclass column:
-[3 1 2]
-
-Dataset after renaming 'Sex' to 'Gender':
-            Survived  Pclass  ... Cabin Embarked
-PassengerId                 ...                
-1                 0       3  ...   NaN        S
-2                 1       1  ...   C85        C
-3                 1       3  ...   NaN        S
-4                 1       1  ...  C123        S
-5                 0       3  ...   NaN        S
-
-![alt text](bivariate_countplot_annotations.png)  
-![alt text](bivariate_pclass_survived.png)
-![alt text](boxplot_age_survived.png)
-![alt text](correlation_heatmap.png)
-![alt text](multivariate_age_pclass_gender.png)
-![alt text](multivariate_pclass_survived_gender.png)
-![alt text](univariate_survived.png)
+Thus, the programs are executed and verified successfully.
